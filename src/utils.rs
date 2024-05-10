@@ -1,29 +1,20 @@
+use anyhow::{Context, Result};
 use jsonschema::JSONSchema;
 use std::{fs::File, io::Read};
 
-pub fn read_file(file_path: &str) -> Result<String, std::io::Error> {
-    let mut file = match File::open(file_path) {
-        Ok(file) => file,
-        Err(error) => {
-            return Err(std::io::Error::new(
-                error.kind(),
-                format!("Failed to open file '{}': {}", file_path, error),
-            ));
-        }
-    };
+pub fn read_file(file_path: &str) -> Result<String> {
+    let mut file =
+        File::open(file_path).with_context(|| format!("Failed to open file '{}'", file_path))?;
 
     let mut contents = String::new();
 
-    if let Err(error) = file.read_to_string(&mut contents) {
-        return Err(std::io::Error::new(
-            error.kind(),
-            format!("Failed to read file '{}': {}", file_path, error),
-        ));
-    }
+    file.read_to_string(&mut contents)
+        .with_context(|| format!("Failed to read file '{}'", file_path))?;
 
     Ok(contents)
 }
 
+// todo: use anyhow for error management
 /// Validate a JSON file against a [JSON Schema](https://json-schema.org/).
 /// If successful: returns the JSON as a serde object. Else: Returns an error message.
 pub fn validate_json(file_path: &str, schema_path: &str) -> Result<serde_json::Value, String> {
