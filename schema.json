@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "basic_academic_record_schema_v1",
+  "type": "array",
+  "items": {
+    "anyOf": [
+      {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "integer",
+            "const": 0
+          }
+        }
+      },
+      {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "integer"
+          },
+          "terms": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "term": {
+                  "type": "string",
+                  "enum": ["fall", "winter", "spring", "summer"]
+                },
+                "classes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "grade": {
+                        "type": "string"
+                      },
+                      "is_p": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": ["id", "grade", "is_p"]
+                  }
+                }
+              },
+              "required": ["term", "classes"]
+            },
+            "allOf": [
+              {
+                "contains": {
+                  "type": "object",
+                  "properties": {
+                    "term": {
+                      "const": "fall"
+                    }
+                  }
+                }
+              },
+              {
+                "contains": {
+                  "type": "object",
+                  "properties": {
+                    "term": {
+                      "const": "spring"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "required": ["year", "terms"],
+        "not": {
+          "properties": {
+            "year": {
+              "const": 0
+            }
+          }
+        }
+      }
+    ]
+  }
+}
