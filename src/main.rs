@@ -46,3 +46,28 @@ fn main() -> Result<()> {
 
   Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+
+  #[test]
+  fn test_get_units_by_id() {
+    match get_data::courses("catalog.csv") {
+      Ok(courses) => {
+        let class_id = "6.08";
+        match get_data::units_by_id(class_id, &courses) {
+          Ok(units) => {
+            assert_eq!(units, 12);
+          }
+          Err(_) => {
+            panic!("Class {} not found", class_id);
+          }
+        }
+      }
+      Err(error) => {
+        panic!("Error loading courses: {}", error);
+      }
+    }
+  }
+}
