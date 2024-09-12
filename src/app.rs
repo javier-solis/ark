@@ -1,5 +1,5 @@
-use crate::data_ops::get_data;
 use crate::types::gpa;
+use crate::{data_ops::get_data, CATALOG_PATH};
 use anyhow::{Context, Result};
 use colored::Colorize;
 use std::str::FromStr;
@@ -26,7 +26,7 @@ pub fn scan(json_instance: &serde_json::Value) -> Result<f64> {
   let mut wgp5: u32 = 0;
   let mut wgp4: u32 = 0;
 
-  let catalog = get_data::courses("catalog.csv")?;
+  let catalog = get_data::courses(CATALOG_PATH)?;
 
   let entries = match json_instance.as_array() {
     Some(array) => array,
