@@ -6,8 +6,8 @@ use anyhow::{Context, Result};
 use data_ops::get_data;
 use utils::print_courses;
 
-const CATALOG_PATH: &str = "catalog.csv";
-const ROADMAP_PATH: &str = "roadmap.json";
+const CATALOG_PATH: &str = "data/catalog.csv";
+const ROADMAP_PATH: &str = "data/roadmap.json";
 const SCHEMA_PATH: &str = "schema.json";
 
 fn main() -> Result<()> {
